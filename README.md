@@ -12,25 +12,44 @@ plugins from it in one click.
 
 ---
 
+## Before you start — what you need
+
+ChatGTM is tool-agnostic and connects to your own accounts. A full pull needs
+**three connectors**, not just enrichment:
+
+- **Enrichment** — Apollo (or Clay, FullEnrich, …)
+- **A read-only CRM** — HubSpot, Salesforce, Attio, …
+- **A mailbox** — Gmail or Outlook
+
+Setup will stall at the verify + test-pull steps if only one is connected, so
+confirm all three are addable in your Claude plan before you begin.
+
+> **You never paste API keys.** Apollo and the other tools connect as **Claude
+> Connectors** via **Settings → Connectors** (OAuth). The skills explicitly tell
+> you never to paste a token or key into chat — there is nowhere to put one, and
+> you shouldn't.
+
 ## For portfolio companies — how to install
 
 In Claude Cowork (or Claude Code):
 
 1. **Add the marketplace** (one time):
    ```
-   /plugin marketplace add MainSequenceVentures/msv-gtm-marketplace
+   /plugin marketplace add Main-Sequence-Ventures/chat-gtm
    ```
-   (or paste the repo URL if you were given one)
+   This is the GitHub `owner/repo`. (or paste the repo URL if you were given one)
 
 2. **Install ChatGTM**:
    ```
    /plugin install chatgtm@msv-gtm-marketplace
    ```
+   Note: `chatgtm@msv-gtm-marketplace` uses the **marketplace name** (from
+   `marketplace.json`), which stays `msv-gtm-marketplace` regardless of the repo name.
 
 3. **Set it up**: say **"set up ChatGTM"**. The wizard connects your own tools
-   (CRM, Gmail or Outlook, and an enrichment provider such as Apollo, Clay, or
-   FullEnrich), captures your segment, and runs a small test pull. Nothing is
-   ever sent automatically.
+   as Claude Connectors — a read-only CRM, Gmail or Outlook, and an enrichment
+   provider such as Apollo, Clay, or FullEnrich — captures your segment, and
+   runs a small test pull. Nothing is ever sent automatically.
 
 When MSV ships an update, you get it by running:
 ```
@@ -41,11 +60,13 @@ When MSV ships an update, you get it by running:
 
 ## For MSV — how to publish this to GitHub
 
-This folder is a complete marketplace repo. To publish it under the Main
-Sequence org and share it with portfolio companies:
+This folder is a complete marketplace repo, published at
+[`Main-Sequence-Ventures/chat-gtm`](https://github.com/Main-Sequence-Ventures/chat-gtm).
+To publish it (or a copy) under the Main Sequence org:
 
-1. **Create the repo** in the Main Sequence GitHub org, e.g.
-   `MainSequenceVentures/msv-gtm-marketplace`.
+1. **Create the repo** in the Main Sequence GitHub org (the live one is
+   `Main-Sequence-Ventures/chat-gtm`). The repo name is what portfolio companies
+   pass to `/plugin marketplace add`, so it must match exactly.
 
 2. **Push these files** to the repo root (the `.claude-plugin/marketplace.json`
    must sit at the repository root):
@@ -53,9 +74,9 @@ Sequence org and share it with portfolio companies:
    cd msv-gtm-marketplace
    git init
    git add .
-   git commit -m "ChatGTM marketplace v1.0.0"
+   git commit -m "ChatGTM marketplace v1.1.0"
    git branch -M main
-   git remote add origin git@github.com:MainSequenceVentures/msv-gtm-marketplace.git
+   git remote add origin git@github.com:Main-Sequence-Ventures/chat-gtm.git
    git push -u origin main
    ```
 
