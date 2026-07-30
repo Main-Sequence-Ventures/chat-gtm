@@ -29,56 +29,83 @@ confirm all three are addable in your Claude plan before you begin.
 > you never to paste a token or key into chat — there is nowhere to put one, and
 > you shouldn't.
 
-## For portfolio companies — how to install
+## How to install
 
-The install method depends on where you run Claude. **The `/plugin` command only
-works in the interactive Claude Code terminal.** In **Cowork / Claude Code on the
-web** it isn't available (you'll see *"/plugin isn't available in this
-environment"*) — use the settings.json method below instead.
+Pick the method that matches your situation. They're ordered by least user effort.
+The GitHub repo is `Main-Sequence-Ventures/chat-gtm`; once added, it registers as
+the marketplace **`msv-gtm-marketplace`** (that name comes from `marketplace.json`
+and never changes, regardless of the repo name).
 
-### Method A — Cowork / web / any environment (settings.json)
+### 🥇 Method 1 — Org-managed (zero effort for users) — *recommended within MSV*
 
-Add the marketplace and enable the plugin declaratively. Edit
-`.claude/settings.json` in your project (or `~/.claude/settings.json` to enable it
-everywhere) and add:
+An MSV admin enables it once for the whole workspace; it then **appears
+automatically for every member on every platform (terminal, desktop, and Cowork
+web)** with no action from users.
+
+1. Go to **[claude.ai/admin-settings/claude-code](https://claude.ai/admin-settings/claude-code)**
+   → **Managed settings** (requires an Owner role on a Teams/Enterprise plan).
+2. Add:
+   ```json
+   {
+     "extraKnownMarketplaces": {
+       "msv-gtm-marketplace": {
+         "source": { "source": "github", "repo": "Main-Sequence-Ventures/chat-gtm" },
+         "autoUpdate": true
+       }
+     },
+     "enabledPlugins": { "chatgtm@msv-gtm-marketplace": true }
+   }
+   ```
+
+Users see one security-approval dialog the first time, then it's silent forever.
+
+> **Note:** managed settings only reach people **inside MSV's own workspace**.
+> Portfolio companies in their own separate orgs won't get it this way — use
+> Method 2 for them.
+
+### 🥈 Method 2 — Repo-committed config (external companies, one prompt)
+
+Do the JSON once *for* them so they never touch it. Commit a `.claude/settings.json`
+to a repo they open:
 
 ```json
 {
   "extraKnownMarketplaces": {
     "msv-gtm-marketplace": {
-      "source": {
-        "source": "github",
-        "repo": "Main-Sequence-Ventures/chat-gtm"
-      }
+      "source": { "source": "github", "repo": "Main-Sequence-Ventures/chat-gtm" }
     }
   },
-  "enabledPlugins": {
-    "chatgtm@msv-gtm-marketplace": true
-  }
+  "enabledPlugins": { "chatgtm@msv-gtm-marketplace": true }
 }
 ```
 
-- `extraKnownMarketplaces` → the key (`msv-gtm-marketplace`) is a label you choose;
-  `source.repo` is the GitHub `owner/repo`.
-- `enabledPlugins` → format is `"<plugin>@<marketplace-label>": true`. The plugin
-  is `chatgtm`.
+When they open (and trust) the repo, Claude prompts *"Install marketplace
+msv-gtm-marketplace?"* — they click **Install** once, and ChatGTM loads. Works on
+terminal, desktop, and Cowork.
 
-Reload the session and ChatGTM's skills are available. To update later, you don't
-need to change anything — set `"autoUpdate": true` on the marketplace entry, or
-re-pull the repo.
+### 🥉 Method 3 — Terminal one-liner (for CLI users)
 
-### Method B — interactive Claude Code terminal (`/plugin`)
-
-If you're in the terminal CLI, the interactive command works too:
-
-```
-/plugin marketplace add Main-Sequence-Ventures/chat-gtm
-/plugin install chatgtm@msv-gtm-marketplace
+```bash
+claude plugin marketplace add Main-Sequence-Ventures/chat-gtm && \
+claude plugin install chatgtm@msv-gtm-marketplace --scope project
 ```
 
-`chatgtm@msv-gtm-marketplace` uses the **marketplace name** from
-`marketplace.json`, which stays `msv-gtm-marketplace` regardless of the repo name.
-Updates: `/plugin marketplace update msv-gtm-marketplace`.
+Terminal CLI only (not Cowork). The equivalent interactive commands are
+`/plugin marketplace add Main-Sequence-Ventures/chat-gtm` then
+`/plugin install chatgtm@msv-gtm-marketplace`.
+
+### Method 4 — Desktop app plugin browser (GUI, desktop only)
+
+In the Claude **desktop app**: **Code** tab → **+** → **Plugins** → **Add
+marketplace** → paste `Main-Sequence-Ventures/chat-gtm` → find **chatgtm** →
+**Install**. Note: desktop-installed plugins do **not** carry over to Cowork/web
+sessions.
+
+### Method 5 — Manual settings.json (last resort)
+
+If none of the above fit, a user can hand-edit `.claude/settings.json` (project) or
+`~/.claude/settings.json` (everywhere) with the JSON from Method 2. Avoid this for
+non-technical users — it's error-prone.
 
 ### Then set it up
 
