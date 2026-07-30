@@ -1,0 +1,16 @@
+{
+  "name": "chatgtm",
+  "version": "0.3.0",
+  "description": "High-volume, high-customization outbound sales engine (ChatGTM). Set a leadership-owned segment lock, pull prospects from your own enrichment tool, gate every email on a verifiable signal, and draft outreach that does not read as AI. Ships with absolute guardrails: drafts only (never sends), read-only CRM, providers receive only the target filter, and all information stays local. Tool-agnostic: connect your own CRM, mailbox, and enrichment provider during setup.",
+  "author": {
+    "name": "Main Sequence (MSV)"
+  },
+  "keywords": [
+    "sales",
+    "outbound",
+    "gtm",
+    "prospecting",
+    "enrichment",
+    "crm"
+  ]
+}

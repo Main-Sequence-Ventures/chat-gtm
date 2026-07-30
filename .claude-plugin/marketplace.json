@@ -1,0 +1,20 @@
+{
+  "name": "msv-gtm-marketplace",
+  "owner": {
+    "name": "Main Sequence (MSV)",
+    "email": "mike.nicholls@mseq.vc"
+  },
+  "metadata": {
+    "description": "MSV go-to-market tools for portfolio companies. Install ChatGTM to run high-volume, high-customization outbound on your own connected tools.",
+    "version": "1.1.0"
+  },
+  "plugins": [
+    {
+      "name": "chatgtm",
+      "source": "./plugins/chatgtm",
+      "description": "Outbound sales engine: leadership-owned segment lock, verifiable-signal gating, non-AI-sounding drafts, CRM write-back, tempo report, and a status dashboard. Tool-agnostic \u2014 connect your own CRM, mailbox, and enrichment provider.",
+      "version": "0.3.0",
+      "category": "sales"
+    }
+  ]
+}
