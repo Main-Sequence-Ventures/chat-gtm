@@ -31,30 +31,61 @@ confirm all three are addable in your Claude plan before you begin.
 
 ## For portfolio companies — how to install
 
-In Claude Cowork (or Claude Code):
+The install method depends on where you run Claude. **The `/plugin` command only
+works in the interactive Claude Code terminal.** In **Cowork / Claude Code on the
+web** it isn't available (you'll see *"/plugin isn't available in this
+environment"*) — use the settings.json method below instead.
 
-1. **Add the marketplace** (one time):
-   ```
-   /plugin marketplace add Main-Sequence-Ventures/chat-gtm
-   ```
-   This is the GitHub `owner/repo`. (or paste the repo URL if you were given one)
+### Method A — Cowork / web / any environment (settings.json)
 
-2. **Install ChatGTM**:
-   ```
-   /plugin install chatgtm@msv-gtm-marketplace
-   ```
-   Note: `chatgtm@msv-gtm-marketplace` uses the **marketplace name** (from
-   `marketplace.json`), which stays `msv-gtm-marketplace` regardless of the repo name.
+Add the marketplace and enable the plugin declaratively. Edit
+`.claude/settings.json` in your project (or `~/.claude/settings.json` to enable it
+everywhere) and add:
 
-3. **Set it up**: say **"set up ChatGTM"**. The wizard connects your own tools
-   as Claude Connectors — a read-only CRM, Gmail or Outlook, and an enrichment
-   provider such as Apollo, Clay, or FullEnrich — captures your segment, and
-   runs a small test pull. Nothing is ever sent automatically.
-
-When MSV ships an update, you get it by running:
+```json
+{
+  "extraKnownMarketplaces": {
+    "msv-gtm-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "Main-Sequence-Ventures/chat-gtm"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "chatgtm@msv-gtm-marketplace": true
+  }
+}
 ```
-/plugin marketplace update msv-gtm-marketplace
+
+- `extraKnownMarketplaces` → the key (`msv-gtm-marketplace`) is a label you choose;
+  `source.repo` is the GitHub `owner/repo`.
+- `enabledPlugins` → format is `"<plugin>@<marketplace-label>": true`. The plugin
+  is `chatgtm`.
+
+Reload the session and ChatGTM's skills are available. To update later, you don't
+need to change anything — set `"autoUpdate": true` on the marketplace entry, or
+re-pull the repo.
+
+### Method B — interactive Claude Code terminal (`/plugin`)
+
+If you're in the terminal CLI, the interactive command works too:
+
 ```
+/plugin marketplace add Main-Sequence-Ventures/chat-gtm
+/plugin install chatgtm@msv-gtm-marketplace
+```
+
+`chatgtm@msv-gtm-marketplace` uses the **marketplace name** from
+`marketplace.json`, which stays `msv-gtm-marketplace` regardless of the repo name.
+Updates: `/plugin marketplace update msv-gtm-marketplace`.
+
+### Then set it up
+
+Say **"set up ChatGTM"**. The wizard connects your own tools as Claude Connectors
+— a read-only CRM, Gmail or Outlook, and an enrichment provider such as Apollo,
+Clay, or FullEnrich — captures your segment, and runs a small test pull. Nothing
+is ever sent automatically.
 
 ---
 
